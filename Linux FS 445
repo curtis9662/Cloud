@@ -1,0 +1,15 @@
+sudo mkdir /mnt/blactecfs
+if [ ! -d "/etc/smbcredentials" ]; then
+sudo mkdir /etc/smbcredentials
+fi
+if [ ! -f "/etc/smbcredentials/blactec101.cred" ]; then
+    sudo bash -c 'echo "username=blactec101" >> /etc/smbcredentials/blactec101.cred'
+    sudo bash -c 'echo "password=lWCeeymJ+SNbtJZctZYE5vbiHGH2hT1OI1/gPjJu9vVV4LX62iZJli4H77HzI0tdsmizR2gqwuB/+AStPhgjTw==" >> /etc/smbcredentials/blactec101.cred'
+fi
+sudo chmod 600 /etc/smbcredentials/blactec101.cred
+
+sudo bash -c 'echo "//blactec101.file.core.windows.net/blactecfs /mnt/blactecfs cifs nofail,vers=3.0,credentials=/etc/smbcredentials/blactec101.cred,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
+sudo mount -t cifs //blactec101.file.core.windows.net/blactecfs /mnt/blactecfs -o vers=3.0,credentials=/etc/smbcredentials/blactec101.cred,dir_mode=0777,file_mode=0777,serverino
+
+
+#In order to mount an Azure file share outside of the Azure region it is hosted in, such as on-premises or in a different Azure region, the OS must support the encryption functionality of SMB 3.0.
