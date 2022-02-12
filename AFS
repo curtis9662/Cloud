@@ -1,0 +1,15 @@
+Start-Sleep 5 #about to test the port 445 Connection in 5,4,3,2
+
+$connectTestResult = Test-NetConnection -ComputerName blactec101.file.core.windows.net -Port 445
+if ($connectTestResult.TcpTestSucceeded) {
+    # Save the password so the drive will persist on reboot
+    cmd.exe /C "cmdkey /add:`"blactec101.file.core.windows.net`" /user:`"localhost\blactec101`" /pass:`"lWCeeymJ+SNbtJZctZYE5vbiHGH2hT1OI1/gPjJu9vVV4LX62iZJli4H77HzI0tdsmizR2gqwuB/+AStPhgjTw==`""
+    # Mount the drive
+    New-PSDrive -Name Z -PSProvider FileSystem -Root "\\blactec101.file.core.windows.net\blactecfs" -Persist
+} else {
+    Write-Error -Message "Unable to reach the Azure storage account via port 445. Check to make sure your organization or ISP is not blocking port 445, or use Azure P2S VPN, Azure S2S VPN, or Express Route to tunnel SMB traffic over a different port."
+} 
+
+#This script will check to see if this storage account is accessible via TCP port 445, which is the port SMB uses. If port 445 is available, your Azure file share will be persistently mounted. Your organization or internet service provider (ISP) may block port 445
+#You may use Azure Point-to-Site (P2S) VPN, Azure Site-to-Site (S2S) VPN, or ExpressRoute to tunnel SMB traffic to your Azure file share over a different port. 
+#Note: The script will only work on Windows Server 2012 and above.
