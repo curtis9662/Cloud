@@ -1,0 +1,9 @@
+New-AzVm
+-ResourceGroupName "#Enter Resource Group"
+-Name "#Enter VM name"
+-Location "#Enter VM Region to deploy"
+-VirtualNetworkName "Vnet01"
+-SubnetName "#Enter Subnet Name"
+-SecurityGroupName "#enter sec group name"
+-PublicAddressName "#Enter/create Public IP name"
+-OpenPorts 3389 #RDP Port
