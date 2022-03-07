@@ -1,0 +1,5 @@
+#Utilize - 
+#CLI
+    az vm start --resource-group <ResGrp Name> --name <Resource Name> --subscription <37char>
+#Powershell
+    Start-AzVM -ResourceGroupName "ResGrp Name" -Name "Resource Name"
