@@ -1,0 +1,25 @@
+pgrep process_name ->	Find the pid of a process with a given name (e.g., pgrep firefox)
+
+pgrep -u user_name process_name	-> Find the pid of a process with a given name owned by a specific user (e.g., pgrep -u john firefox)
+
+pgrep -f process_name	-> Find the pid of a process with a given name and its arguments (e.g., pgrep -f "python my_script.py")
+
+pgrep -x process_name	-> Find the pid of a process with an exact match of the given name (e.g., pgrep -x firefox)
+
+pgrep -d delimiter process_name	-> Find the pid of a process with a given name and separate the output with a delimiter (e.g., pgrep -d ',' firefox)
+
+kill pid	-> Kill a process with a given pid (e.g., kill 1234)
+
+kill -s signal pid	-> Send a specific signal to a process with a given pid (e.g., kill -s SIGTERM 1234)
+
+pkill process_name	-> Kill all processes with a given name (e.g., pkill firefox)
+
+pkill -u user_name process_name	-> Kill all processes with a given name owned by a specific user (e.g., pkill -u john firefox)
+
+pkill -f process_name	-> Kill all processes with a given name and its arguments (e.g., pkill -f "python my_script.py")
+
+pkill -x process_name	-> Kill all processes with an exact match of the given name (e.g., pkill -x firefox)
+
+pkill -d delimiter process_name	-> Kill all processes with a given name and separate the output with a delimiter (e.g., pkill -d ',' firefox)
+
+pkill -u user_name -f process_name	-> Kill all processes with a given name and its arguments owned by a specific user (e.g., pkill -u john -f "python my_script.py")
