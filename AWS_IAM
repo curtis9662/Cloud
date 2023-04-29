@@ -1,0 +1,2 @@
+#List AWS Users _ elementary IAM
+aws iam list-users --query 'Users[].{UserName: UserName, UserId: UserId, Arn: Arn, CreateDate: CreateDate, PasswordLastUsed: PasswordLastUsed, AccessKeys: AccessKeys[].{AccessKeyId: AccessKeyId, Status: Status, CreateDate: CreateDate, LastUsed: LastUsed, LastRotated: LastRotated}, MfaDevices: MfaDevices[].{SerialNumber: SerialNumber, EnableDate: EnableDate, UserName: UserName, DeviceType: DeviceType, DeviceId: DeviceId}}'
