@@ -52,28 +52,3 @@ resources:
             priority: 100
             direction: 'Inbound'
 
-
-
-############################ Deployment Steps:
-Save the Template: Save the above YAML as a file named webserver-template.yaml.
-Azure CLI: Install the Azure CLI if you don't have it installed already.
-Login to Azure: Run az login and follow the prompts to login to your Azure account.
-Create a Resource Group: Run az group create --name MyResourceGroup --location eastus.
-Deploy the Template: Run az deployment group create --resource-group MyResourceGroup --template-file ./webserver-template.yaml --parameters adminPassword=<your-password>.
-Explanation:
-Virtual Machine Resource Block:
-
-type: Microsoft.Compute/virtualMachines: This line defines the resource type as a virtual machine.
-name: 'WebServerVM': This is the name of the virtual machine.
-hardwareProfile, storageProfile, and osProfile: These sections define the VM size, the image to be used, and the OS configuration respectively.
-Network Interface Resource Block:
-
-type: Microsoft.Network/networkInterfaces: Defines the resource type as a network interface.
-name: 'webServerNic': This is the name of the network interface.
-properties: This section defines the properties of the network interface, including IP configurations and associated network security group.
-Network Security Group Resource Block:
-
-type: Microsoft.Network/networkSecurityGroups: Defines the resource type as a network security group.
-name: 'webServerNsg': This is the name of the network security group.
-securityRules: This section defines the security rules, allowing only HTTPS traffic on port 443.
-###########################
