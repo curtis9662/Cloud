@@ -1,0 +1,1 @@
+aws cloudtrail lookup-events --lookup-attributes AttributeKey=EventName,AttributeValue=ConsoleLogin --start-time $(date --date='180 days ago' --iso-8601) --end-time $(date --iso-8601) --query 'Events[].{EventTime:EventTime,Username:Username,ResourceName:Resources[0].ResourceName,EventName:EventName}' --output table
