@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: 2010-09-09
+#AWSTemplateFormatVersion: 2010-09-09
 
 Description: Deploys a IAM Roles that will be used in Batch workflow
 
