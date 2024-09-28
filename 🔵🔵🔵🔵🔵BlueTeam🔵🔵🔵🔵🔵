@@ -1,0 +1,49 @@
+#### BLUETEAM ####
+# 1. Retrieve detailed sign-in logs with location and device information
+Get-AzureADAuditSignInLogs | Select-Object UserPrincipalName, AppDisplayName, IPAddress, Location, DeviceDetail | Format-Table -AutoSize
+
+# 2. List all guest users and their creation date
+Get-AzureADUser -Filter "userType eq 'Guest'" | Select-Object DisplayName, UserPrincipalName, CreatedDateTime | Sort-Object CreatedDateTime
+
+# 3. Find users with high-risk sign-ins in the last 30 days
+$date = (Get-Date).AddDays(-30)
+Get-AzureADAuditSignInLogs -Filter "createdDateTime ge $date and riskState eq 'atRisk'" | Group-Object UserPrincipalName | Select-Object Name, Count | Sort-Object Count -Descending
+
+# 4. Identify applications with delegated permissions and their consent status
+Get-AzureADServicePrincipal -All $true | Get-AzureADServicePrincipalOAuth2PermissionGrant | Select-Object ClientId, ResourceId, Scope, ConsentType | Format-Table -AutoSize
+
+# 5. List all custom domain names and their verification status
+Get-AzureADDomain | Select-Object Name, IsVerified, AuthenticationType | Sort-Object IsVerified
+
+# 6. Find users with MFA disabled
+Get-AzureADUser -All $true | Get-MsolUser | Where-Object {-not $_.StrongAuthenticationRequirements.State} | Select-Object DisplayName, UserPrincipalName
+
+# 7. Retrieve detailed information about conditional access policies
+Get-AzureADMSConditionalAccessPolicy | Select-Object DisplayName, State, Conditions, GrantControls | Format-List
+
+# 8. List all Azure AD roles and their members
+Get-AzureADDirectoryRole | ForEach-Object { 
+    $role = $_.DisplayName
+    Get-AzureADDirectoryRoleMember -ObjectId $_.ObjectId | 
+    Select-Object @{N='Role';E={$role}}, DisplayName, UserPrincipalName
+}
+
+# 9. Identify unused application registrations
+$date = (Get-Date).AddDays(-90)
+Get-AzureADApplication | Where-Object {$_.LastModifiedDateTime -lt $date} | Select-Object DisplayName, AppId, LastModifiedDateTime | Sort-Object LastModifiedDateTime
+
+# 10. Monitor changes to directory roles in the last 7 days
+$date = (Get-Date).AddDays(-7)
+Search-UnifiedAuditLog -StartDate $date -EndDate (Get-Date) -Operations "Add member to role","Remove member from role" | 
+Select-Object CreationDate, UserIds, Operations, AuditData | 
+ForEach-Object {
+    $auditData = ConvertFrom-Json $_.AuditData
+    [PSCustomObject]@{
+        Date = $_.CreationDate
+        Action = $_.Operations
+        Actor = $_.UserIds
+        TargetUser = $auditData.Target[0].Id
+        Role = $auditData.ModifiedProperties.NewValue
+    }
+}
+#### BLUETEAM ####
